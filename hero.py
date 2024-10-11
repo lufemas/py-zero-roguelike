@@ -4,11 +4,12 @@ import time
 
 class Hero:
     def __init__(self, position, speed):
+        print("[hero.py] Criando HEROI com POSICAO e VELOCIDADE:", position, speed)
+
         # Inicializa o herói com sua posição inicial, velocidade e configurações de animação
-        print("POSITION:", position)
-        self.actor = Actor('hero_idle_0', (80, 80))  # Inicializa com a imagem 'hero_idle_0'
-        self.actor.x = position[0]
-        self.actor.y = position[1]
+        self.actor = Actor('hero_idle_0', position)  # Inicializa com a imagem 'hero_idle_0'
+        # self.actor.x = position[0]
+        # self.actor.y = position[1]
         self.speed = speed  # Velocidade de movimento do herói
         self.moving = False  # Flag para verificar se o herói está se movendo
         self.target_position = position  # Posição alvo do herói

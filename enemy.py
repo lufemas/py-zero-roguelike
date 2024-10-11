@@ -5,6 +5,8 @@ import time
 
 class Enemy:
     def __init__(self, position, speed):
+        print("[enemy.py] Criando INIMIGO com POSICAO e VELOCIDADE:", position, speed)
+      
         # Inicializa o inimigo com posição, velocidade e configurações de animação
         self.actor = Actor('enemy_idle_0', position)  # Começa com a animação de idle
         self.speed = speed  # Velocidade de movimento do inimigo
@@ -17,7 +19,6 @@ class Enemy:
         # Controla o movimento aleatório do inimigo no mapa
         if not self.moving:
             randomVal = random.random()
-            print(randomVal)
             
             # Define se o inimigo vai se mover com 90% de chance de não se mover
             if randomVal < 0.90:
