@@ -55,12 +55,12 @@ def draw_menu():
     mouse_pos = pygame.mouse.get_pos()
 
     # Destaca o botão com fundo cinza se o mouse passar por cima
-    if is_text_hovered(start_pos, 120, 30, mouse_pos):
-        screen.draw.filled_rect(Rect(start_pos[0] - 5, start_pos[1], 150, 30), (100, 100, 100))
-    if is_text_hovered(music_pos, 120, 30, mouse_pos):
-        screen.draw.filled_rect(Rect(music_pos[0] - 5, music_pos[1], 150, 30), (100, 100, 100))
-    if is_text_hovered(exit_pos, 120, 30, mouse_pos):
-        screen.draw.filled_rect(Rect(exit_pos[0] - 5, exit_pos[1], 150, 30), (100, 100, 100))
+    if is_text_hovered(start_pos, 180, 30, mouse_pos):
+        screen.draw.filled_rect(Rect(start_pos[0] - 5, start_pos[1], 180, 30), (100, 100, 100))
+    if is_text_hovered(music_pos, 180, 30, mouse_pos):
+        screen.draw.filled_rect(Rect(music_pos[0] - 5, music_pos[1], 180, 30), (100, 100, 100))
+    if is_text_hovered(exit_pos, 180, 30, mouse_pos):
+        screen.draw.filled_rect(Rect(exit_pos[0] - 5, exit_pos[1], 180, 30), (100, 100, 100))
 
     # Desenha os textos do menu
     screen.draw.text("Roguelike", title_pos, fontsize=50)
