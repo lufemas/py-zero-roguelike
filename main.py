@@ -11,29 +11,44 @@ TILE_SIZE = 16
 
 # Estado do jogo
 game_active = False
+victory = False
+defeat = False
 sound_on = True
 
 # Mapa: 0 = chão, 1 = parede
 map_layout = [[0 if random.random() > 0.2 else 1 for _ in range(16)] for _ in range(16)]
 
-# Inicializar o herói e os inimigos
-hero = Hero((16, 16), 2)  # Começa no segundo tile
-enemies = [Enemy((224, 224), 2), Enemy((96, 96), 2)]  # Colocar os inimigos em posições diferentes
+# Função para obter uma posição aleatória que não seja uma parede
+def get_random_position():
+    while True:
+        x, y = random.randint(0, 15) * TILE_SIZE, random.randint(0, 15) * TILE_SIZE
+        print("Sorteado", x,y)
+        col, row = x // TILE_SIZE, y // TILE_SIZE
+        print(" col, row",  col, row)
+        if map_layout[row][col] == 0:  # Não é parede
+            print("Nao e parede", x,y)
 
+            return (x, y)
+
+# Inicializar o herói, inimigos, e o objetivo (goal)
+# hero = Hero(get_random_position(), 2)
+# enemies = [Enemy(get_random_position(), 2) for _ in range(1)]
+# goal = Actor('goal', get_random_position())  # O objetivo também é aleatório
 def draw():
-    # screen.surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-    # screen.surface = pygame.display.set_mode((WIDTH * 2, HEIGHT * 2), pygame.SCALED)
     screen.clear()
-    if game_active:
-        draw_game()
+    if not game_active:
+        if victory:
+            screen.draw.text("Venceu", center=(WIDTH // 2, HEIGHT // 2), fontsize=50, color="white")
+        elif defeat:
+            screen.draw.text("O inimigo te alcançou, você perdeu", center=(WIDTH // 2, HEIGHT // 2), fontsize=30, color="white")
+        else:
+            draw_menu()
     else:
-        draw_menu()
+        draw_game()
 
 def draw_menu():
     screen.draw.text("Roguelike Game", (WIDTH // 2 - 100, HEIGHT // 2 - 150), fontsize=50)
     screen.draw.text("Press SPACE to Start", (WIDTH // 2 - 150, HEIGHT // 2), fontsize=30)
-
-debug = True  # Toggle this to False to disable debug borders
 
 def draw_game():
     # Desenhar o mapa
@@ -45,32 +60,53 @@ def draw_game():
                 screen.blit("floor", (x, y))
             elif tile == 1:
                 screen.blit("wall", (x, y))
-    
+
+    # Desenhar o goal
+    goal.draw()
+
     # Desenhar o herói e os inimigos
     hero.draw()
-    if debug:
-        draw_sprite_border(hero.actor)  # Draw border for the hero
-
     for enemy in enemies:
         enemy.draw()
-        if debug:
-            draw_sprite_border(enemy.actor)  # Draw border for each enemy
 
 def update():
-    if game_active:
-        update_game()
+    global game_active, victory, defeat
 
-def update_game():
-    hero.move(keyboard, enemies, map_layout)  # Passar o layout do mapa para o herói verificar colisões
-    for enemy in enemies:
-        enemy.move(map_layout)
+    if game_active:
+        hero.move(keyboard, enemies, map_layout)
+        for enemy in enemies:
+            enemy.move(map_layout)
+
+        # Verificar colisão com o goal
+        if hero.actor.colliderect(goal):
+            victory = True
+            game_active = False
+
+        # Verificar colisão com os inimigos
+        for enemy in enemies:
+            if hero.actor.colliderect(enemy.actor):
+              print("COLIDIU")
+                # defeat = True
+                # game_active = False
 
 def on_key_down(key):
-    global game_active
+    global game_active, victory, defeat
     if key == keys.SPACE:
-        game_active = True  # Iniciar o jogo
+        if not game_active and (victory or defeat):
+            reset_game()  # Reiniciar o jogo após vitória ou derrota
+        else:
+            game_active = True  # Iniciar o jogo
 
-def draw_sprite_border(sprite):
-    # Draw a red rectangle around the sprite for debugging purposes
-    screen.draw.rect(Rect(sprite.left, sprite.top, sprite.width, sprite.height), 'red')
+# Função para resetar o jogo
+def reset_game():
+    global hero, enemies, goal, victory, defeat
+    hero = Hero(get_random_position(), 2)
+    enemies = [Enemy(get_random_position(), 2) for _ in range(1)]
+    goal = Actor('goal', get_random_position())
+    game_active = True
+    victory = False
+    defeat = False
+
+reset_game()
+
 pgzrun.go()

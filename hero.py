@@ -13,7 +13,7 @@ class Hero:
         self.speed = speed
         self.moving = False
         self.target_position = position
-        self.actor.topleft = 0, 0
+        # self.actor.topleft = 0, 0
         self.animation_frame = 0
         self.animation_time = time.time()
     

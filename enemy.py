@@ -11,7 +11,7 @@ class Enemy:
         self.target_position = position
         self.animation_frame = 0
         self.animation_time = time.time()
-        self.actor.topleft = 0, 0
+        # self.actor.topleft = 0, 0
     
     def move(self, map_layout):
         if not self.moving:
