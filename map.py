@@ -12,4 +12,4 @@ def get_random_position(map_layout):
         x, y = random.randint(0, len(map_layout[0]) - 1) * TILE_SIZE, random.randint(0, len(map_layout[1]) - 1) * TILE_SIZE
         col, row = x // TILE_SIZE, y // TILE_SIZE
         if map_layout[row][col] == 0:
-            return (x + (TILE_SIZE/2), y + (TILE_SIZE/2))
+            return (x + (TILE_SIZE // 2), y + (TILE_SIZE // 2))
